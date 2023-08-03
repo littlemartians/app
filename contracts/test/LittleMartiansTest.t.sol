@@ -1,11 +1,11 @@
 // In tests/EdenLivemint.t.sol
 pragma solidity ^0.8.0;
 
-import "../src/EdenLivemint.sol";
+import "../src/LittleMartians.sol";
 
-contract EdenLivemintTest is EdenLivemint {
+contract LittleMartiansTest is LittleMartians {
     constructor(string memory name, string memory symbol, address initialOwner)
-        EdenLivemint(name, symbol, initialOwner)
+        LittleMartians(name, symbol, initialOwner)
     {}
 
     function testMint() public {
