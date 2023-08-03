@@ -1,3 +1,10 @@
+.env
+.env.goerli
+node_modules
+eden-subgraph/build
+graph-node
+data
+
 # Logs
 logs
 *.log
