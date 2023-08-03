@@ -1,0 +1,5 @@
+type MintEvent @entity {
+  id: ID!
+  to: Bytes!
+  tokenId: BigInt!
+}

@@ -1,7 +1,7 @@
 .env
 .env.goerli
 node_modules
-eden-subgraph/build
+subgraph/build
 graph-node
 data
 

@@ -1,10 +1,10 @@
 {
-  "name": "eden-livemint",
-  "description": "Smart contracts for Eden Livemint project",
+  "name": "littlemartians-memories",
+  "description": "Smart contracts for Little Martians memories",
   "version": "1.0.0",
   "author": {
-    "name": "Jonathan Miller",
-    "url": "https://github.com/abraham-ai"
+    "name": "Little Martians",
+    "url": "https://github.com/littlemartians"
   },
   "devDependencies": {
     "prettier": "^2.8.4",
