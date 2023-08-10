@@ -36,7 +36,7 @@ contract LittleMartians is ERC721, ERC721URIStorage, Ownable, ILittleMartians {
         super._burn(tokenId);
     }
 
-    function mint(address to, uint256 tokenId) public onlyOwner {
+    function mint(address to, uint256 tokenId) public {
         require(!_mintedTokens[tokenId], "Token already minted");
 
         _mintedTokens[tokenId] = true;
@@ -44,5 +44,10 @@ contract LittleMartians is ERC721, ERC721URIStorage, Ownable, ILittleMartians {
 
         emit MintEvent(to, tokenId); 
     }
+
+    function recoverSigner(bytes32 _messageHashed, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) {
+        return ecrecover(_messageHashed, _v, _r, _s);
+    }
+
 
 }
