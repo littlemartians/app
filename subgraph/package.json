@@ -1,23 +1,18 @@
 {
-  "name": "littlemartians-subgraph-local",
-  "license": "MIT",
+  "name": "littlemartians-graph",
+  "license": "UNLICENSED",
   "scripts": {
-    "refresh-local": "node src/scripts/getAbis.js && node src/scripts/getDeployments.js",
-    "prep": "node src/scripts/prepare.js",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy-goerli": "graph deploy --node https://api.studio.thegraph.com/deploy/ eden-livemint-dev",
-    "create-local": "graph create --node http://localhost:8020/ littlemartians-subgraph-local",
-    "remove-local": "graph remove --node http://localhost:8020/ littlemartians-subgraph-local",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 littlemartians-subgraph-local"
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ littlemartians-graph",
+    "create-local": "graph create --node http://localhost:8020/ littlemartians-graph",
+    "remove-local": "graph remove --node http://localhost:8020/ littlemartians-graph",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 littlemartians-graph",
+    "test": "graph test"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.33.0",
-    "@graphprotocol/graph-ts": "^0.27.0",
-    "mustache": "^4.0.1"
+    "@graphprotocol/graph-cli": "0.48.0",
+    "@graphprotocol/graph-ts": "0.29.1"
   },
-  "devDependencies": {
-    "fs": "^0.0.1-security",
-    "js-yaml": "^4.1.0"
-  }
+  "devDependencies": { "matchstick-as": "0.5.0" }
 }
