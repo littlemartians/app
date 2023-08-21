@@ -7,6 +7,14 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { ILittleMartians } from "./ILittleMartians.sol";
 
+// ethers -> eip191
+// EIP-191 ECDSA, decode-able with OZ ECDSA library like so: 
+// 
+// bytes32 signedHash = keccak256( 
+// abi.encodePacked(addr, block.blockhash(block.number - 1)) 
+// ).toEthSignedMessageHash(); 
+// address signerOz = signedHash.recover(signature);
+
 contract LittleMartians is ERC721, ERC721URIStorage, Ownable, ILittleMartians {
     using Strings for uint256;
     event MintEvent(address indexed to, uint256 indexed tokenId);
