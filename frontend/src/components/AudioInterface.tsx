@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const AudioInterface = () => {
-
-  const audioBufferRef = useRef([]);
-  const audioChunksRef = useRef([]); 
-
   const [listening, setListening] = useState(false);
   const [recording, setRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioURLs, setAudioURLs] = useState([]); // To hold individual audio segments
   const [volume, setVolume] = useState(0);
-  const [onThreshold, setOnThreshold] = useState(100);
-  const [offThreshold, setOffThreshold] = useState(50);
+  const [onThreshold, setOnThreshold] = useState(50);
+  const [offThreshold, setOffThreshold] = useState(10);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const isSpeakingRef = useRef(isSpeaking);
 
@@ -55,13 +51,6 @@ const AudioInterface = () => {
       setVolume(average);
 
       if (average > onThreshold && !isSpeakingRef.current) {
-        // Adding pre-buffered audio
-        if (mediaRecorder && audioBufferRef.current.length > 0) {
-          const bufferedBlob = new Blob(audioBufferRef.current, { type: "audio/wav" });
-          const url = URL.createObjectURL(bufferedBlob);
-          setAudioURLs((prevURLs) => [...prevURLs, url]);
-          audioBufferRef.current = []; // Clearing the buffer
-        }
         setIsSpeaking(true);
       } else if (average < offThreshold && isSpeakingRef.current) {
         setIsSpeaking(false);
@@ -81,23 +70,17 @@ const AudioInterface = () => {
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const recorder = new MediaRecorder(stream);
+      const audioChunks = [];
 
       recorder.ondataavailable = (e) => {
-        // Pre-buffering the audio
-        audioBufferRef.current.push(e.data);
-        if (audioBufferRef.current.length > 10) { // Buffering last 10 chunks
-          audioBufferRef.current.shift();
-        }
-        // Also add to the audioChunks
-        audioChunksRef.current.push(e.data);
+        audioChunks.push(e.data);
       };
 
       recorder.onstop = () => {
         setRecording(false);
-        const blob = new Blob(audioChunksRef.current, { type: "audio/wav" }); // Use audioChunksRef here
+        const blob = new Blob(audioChunks, { type: "audio/wav" });
         const url = URL.createObjectURL(blob);
         setAudioURLs((prevURLs) => [...prevURLs, url]);
-        audioChunksRef.current = []; // Clearing the chunks
       };
 
       recorder.onstart = () => {
@@ -124,11 +107,11 @@ const AudioInterface = () => {
       )}
       <div>
         <label>On Threshold:</label>
-        <input type="range" min="0" max="200" value={onThreshold} onChange={(e) => setOnThreshold(e.target.value)} />
+        <input type="range" min="0" max="100" value={onThreshold} onChange={(e) => setOnThreshold(e.target.value)} />
       </div>
       <div>
         <label>Off Threshold:</label>
-        <input type="range" min="0" max="200" value={offThreshold} onChange={(e) => setOffThreshold(e.target.value)} />
+        <input type="range" min="0" max="100" value={offThreshold} onChange={(e) => setOffThreshold(e.target.value)} />
       </div>
       <div>Volume: {volume.toFixed(2)}</div>
       <div>Speaking: {isSpeaking.toString()}</div>
