@@ -1,6 +1,8 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Balance from "../components/MintButton";
 import AudioInterface from "../components/AudioInterface";
+import LittleMartian from "../components/LittleMartian";
+import nebulana from "../martians/nebulana";
 
 export default function Home() {
   return (
@@ -9,6 +11,7 @@ export default function Home() {
       {/* <ConnectButton /> */}
       {/* <Balance /> */}
       <AudioInterface />
+      {/* <LittleMartian martian={nebulana} /> */}
     </div>
   );
 }
