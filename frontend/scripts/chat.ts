@@ -2,8 +2,9 @@ import readline from 'readline';
 import { Configuration, OpenAIApi, ChatCompletionRequestMessage } from "openai";
 import martians from '../src/martians';
 import dotenv from 'dotenv';
-
 import https from 'https';
+
+const streaming = false;
 
 dotenv.config();
 
@@ -89,34 +90,36 @@ async function converse() {
         "role": "user", 
         "content": input
       });
-
-      // const response = await openai.createChatCompletion({
-      //   model: "gpt-3.5-turbo",
-      //   messages: conversation,
-      //   temperature: 1,
-      //   max_tokens: 256,
-      //   top_p: 1,
-      //   frequency_penalty: 0,
-      //   presence_penalty: 0,
-      // });    
-      // const answer = response?.data?.choices[0].message?.content || "error";
-
-      process.stdout.write(`\x1b[31m${martian.name}\x1b[0m: `);
-
-      const answer = await chat_stream({
-        model: "gpt-3.5-turbo",
-        messages: conversation,
-        temperature: 1,
-        max_tokens: 256,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      })
+      let answer;
+      if (streaming) {
+        process.stdout.write(`\x1b[31m${martian.name}\x1b[0m: `);
+        answer = await chat_stream({
+          model: "gpt-3.5-turbo",
+          messages: conversation,
+          temperature: 1,
+          max_tokens: 256,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        })
+      }
+      else {
+        const response = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: conversation,
+          temperature: 1,
+          max_tokens: 256,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        });    
+        answer = response?.data?.choices[0].message?.content || "error";
+        console.log(`\x1b[31m${martian.name}\x1b[0m: ${answer}`);
+      }
       conversation.push({
         "role": "assistant", 
         "content": answer
       });
-      //console.log(`\x1b[31m${martian.name}\x1b[0m: ${answer}`);
       console.log("\n")
       await converse();
     }
