@@ -1,17 +1,27 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Balance from "../components/MintButton";
-import AudioInterface from "../components/AudioInterface";
-import LittleMartian from "../components/LittleMartian";
-import nebulana from "../martians/nebulana";
+import React from 'react';
+import type { NextPage } from "next";
+import Head from "next/head";
+import "antd/dist/reset.css";
 
-export default function Home() {
+import martians from "../martians";
+
+const Home: NextPage = () => {
+  
   return (
     <div>
-      {/* <h1 className="text-3xl font-bold underline">Hello world!</h1> */}
-      {/* <ConnectButton /> */}
-      {/* <Balance /> */}
-      <AudioInterface />
-      {/* <LittleMartian martian={nebulana} /> */}
+      <Head>
+        <title>Little Martians</title>
+        <meta name="description" content="App template interface" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      {/* <LittleMartian /> */}
+      {martians.map((martian) => (
+        <div key={martian.key}>
+          <h1><a href={`/${martian.key}`}>{martian.name}</a></h1>
+        </div>
+      ))}
     </div>
   );
-}
+};
+
+export default Home;

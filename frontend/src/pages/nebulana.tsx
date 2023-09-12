@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import "antd/dist/reset.css";
 
-import LittleMartian from "components/LittleMartian";
+import LittleMartian from "../components/LittleMartian";
 import nebulana from "../martians/nebulana";
 
 const Home: NextPage = () => {
