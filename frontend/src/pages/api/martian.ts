@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSessionRoute } from "util/withSession";
+import { withSessionRoute } from "../../util/withSession";
 import axios from 'axios';
 import fs from 'fs';
 import { promisify } from 'util';
@@ -32,13 +32,20 @@ const textToSpeech = async (inputText: string, voiceId: string) =>
 
 const uploadFile = async (filePath: string) => 
 {
+  const apiKey = process.env.EDEN_API_KEY;
+  const apiSecret = process.env.EDEN_API_SECRET;
+  if (!apiKey || !apiSecret) {
+    throw new Error('API key or secret is not defined');
+  }
+
+
   const readFileAsync = promisify(fs.readFile);
   const media = await readFileAsync(filePath);
   const form = new FormData();
   form.append('media', media);
   const authHeader = {
-    "x-api-key": process.env.EDEN_API_KEY,
-    "x-api-secret": process.env.EDEN_API_SECRET,
+    "x-api-key": apiKey,
+    "x-api-secret": apiSecret,
     'Content-Type': 'multipart/form-data',
   };
   const response = await axios.post(
