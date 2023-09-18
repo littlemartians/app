@@ -13,14 +13,22 @@ const openai = new OpenAIApi(configuration);
 const llm = async (martianName : string, chats: ChatCompletionRequestMessage[]) => {
   const martian = martians.filter((m) => m.key === martianName)[0];
 
-  const messages : ChatCompletionRequestMessage[] = [{
+  const initialChat = martian.messages;
+
+  const systemMessage : ChatCompletionRequestMessage = {
     "role": "system", 
     "content": martian.systemPrompt
-  }];
+  };
+
+  const messages : ChatCompletionRequestMessage[] = [
+    systemMessage,
+    ...initialChat,
+    ...chats
+  ];
 
   const gptResponse = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    messages: messages.concat(chats),
+    messages: messages,
     temperature: 1,
     max_tokens: 256,
     top_p: 1,

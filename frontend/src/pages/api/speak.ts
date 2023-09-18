@@ -2,11 +2,15 @@ import * as formidable from "formidable";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Buffer } from 'buffer';
 import { ChatCompletionRequestMessage } from "openai";
+import fs from 'fs';
+import fetch from 'node-fetch';
+
 
 import martians from '../../martians';
 import llm from '../../util/llm'
 import whisper from '../../util/whisper'
 import tts from '../../util/tts'
+import create from '../../util/create'
 
 export const config = {
   api: {
@@ -51,8 +55,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const allMessages = chat.concat(newMessage);
         const answer = await llm(martian, allMessages);
 
-        // tts
-        const audioData = await tts(answer, martian_.voiceId);
+        // create image and tts in parallel
+        const [imageUrl, audioData] = await Promise.all([
+          create(answer),
+          tts(answer, martian_.voiceId)
+        ]);
+
+        const imageFetch = await fetch(imageUrl);
+        const imageBuffer = await imageFetch.arrayBuffer();
+        const image = Buffer.from(imageBuffer).toString('base64');
+
         const base64Audio = Buffer.from(audioData).toString('base64');
       
         // save local file
@@ -63,6 +75,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         resolve({ 
           userText: prompt, 
           martianText: answer,
+          image: image,
           audio: base64Audio 
         });
 

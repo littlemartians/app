@@ -8,6 +8,16 @@ const nebulana: Martian = {
   messages: [
     // {
     //   "role": "user",
+    //   "content": "Let's play a game. We're going to make up a story together. I want you to begin telling a fantastical story with me as the central character. At every turn you will make up the next segment of the story, but please be brief -- just 1 or 2 sentences about what happens next. And then, I want you to ask me to prompt me with some question of how to continue the story from there. The question should not be too open-ended... it should be responding to something in the story. I respond, and then you repeat the process from there, building upon my response. We will do this in exactly THREE turns. Then finally, you will resolve the story with one final capitulation. Also, please do not give me a name. Address me in the second person only." 
+    // },{
+    //   "role": "assistant",
+    //   "content": "Ah, dear interlocutor, what a wonderful idea. Your wish is my command. When you are ready to proceed, say 'Okay', and I will begin the story!"
+    // }//,{
+    //   "role": "user",
+    //   "content": "Ok, I'm ready. Go ahead!" 
+    // },
+    // {
+    //   "role": "user",
     //   "content": "Nebulana, how do you view the passage of time?" 
     // },{
     //   "role": "assistant",
