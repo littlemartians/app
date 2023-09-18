@@ -50,7 +50,7 @@ async function chat_stream(config: any) {
         ...config,
         stream: true,
       }, { responseType: 'stream' });
-      res.data.on('data', (data: any) => {
+      (res.data as any).on('data', (data: any) => {
         const lines = data.toString().split('\n').filter((line: string) => line.trim() !== '');
         for (const line of lines) {
           const message = line.replace(/^data: /, '');          
