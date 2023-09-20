@@ -89,40 +89,62 @@ const AudioInterface = () => {
   }
 
   return (
-    <div id="audioInterface" style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
-      <div style={{width: "50%", padding: "10px"}}>
-        {chat.map((item, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <audio controls src={audioUrls[index]} style={{ marginRight: '10px' }}></audio>
-            <div style={{width: "70%"}}>
-              <span className="text-lg text-gray-500">{item.role}</span>
-              &nbsp;:&nbsp; 
-              <span className="text-lg text-white-700">{item.content}</span>
+    <div style={{padding: "10px"}}>
+      {chat.length == 0 && !thinking && (
+        <p>
+          To begin the conversation, click the Speak button and record your first message.
+        </p>
+      )}  
+      <div id="audioInterface" style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
+        <div style={{width: "50%", padding: "10px"}}>
+          {chat.map((item, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <audio controls src={audioUrls[index]} style={{ marginRight: '10px' }}></audio>
+              <div style={{width: "70%"}}>
+                <span className="text-lg text-gray-500">{item.role}</span>
+                &nbsp;:&nbsp; 
+                <span className="text-lg text-white-700">{item.content}</span>
+              </div>
             </div>
-          </div>
-        ))}
-        <br />
-        {thinking ? <LoadingOutlined rev={undefined} /> : (<>
-          <Button 
-            size="large"
-            onClick={listening ? stopListening : startListening} 
-            style={{backgroundColor: listening ? 'red' : 'green'}}
-            icon={listening ? <StopOutlined style={{ fontSize: '20px' }} rev={undefined} /> : <AudioOutlined style={{ fontSize: '20px' }} rev={undefined} />}
-          />
-          <Button 
-            size="large"
-            onClick={() => {
-              setChat([]);
-              setImageSrc(null);
-              setAudioUrls([]);
-            }}
-            style={{backgroundColor: 'blue', marginLeft: '10px'}}
-            icon={<ReloadOutlined style={{ fontSize: '20px' }} rev={undefined} />}
-          />
-        </>)}
-      </div>
-      <div style={{width: "50%", padding: "10px"}}>
-        {imageSrc && <img src={imageSrc} alt="From server" style={{maxWidth: "100%"}} />}
+          ))}
+          <br />
+          {thinking ? 
+            <div style={{ fontSize: '24px' }}> 
+              <LoadingOutlined 
+                style={{ marginRight: '10px' }} 
+                rev={undefined} 
+              /> 
+              Please wait...
+            </div>
+          : (<>
+            <Button 
+              size="large"
+              onClick={listening ? stopListening : startListening} 
+              style={{color: "white", backgroundColor: listening ? 'red' : 'green'}}
+              icon={listening ? <StopOutlined style={{ fontSize: '20px' }} rev={undefined} /> : <AudioOutlined style={{ fontSize: '20px' }} rev={undefined} />}
+            >
+              {listening ? "Stop" : "Speak"}
+            </Button>
+            {chat.length > 0 && (
+              <Button 
+                size="large"
+                onClick={() => {
+                  setChat([]);
+                  setImageSrc(null);
+                  setAudioUrls([]);
+                }}
+                style={{color: "white", backgroundColor: 'blue', marginLeft: '10px'}}
+                icon={<ReloadOutlined style={{ fontSize: '20px' }} rev={undefined} />}
+              >
+                New Conversation
+              </Button>
+            )
+          }
+          </>)}
+        </div>
+        <div style={{width: "50%", padding: "10px"}}>
+          {imageSrc && <img src={imageSrc} alt="From server" style={{maxWidth: "100%"}} />}
+        </div>
       </div>
     </div>
   );

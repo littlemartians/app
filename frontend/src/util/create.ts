@@ -6,7 +6,9 @@ dotenv.config();
 const EDEN_API_KEY = process.env.EDEN_API_KEY;
 const EDEN_API_SECRET = process.env.EDEN_API_SECRET;
 
+
 const eden = new EdenClient({
+  //edenApiUrl: "http://0.0.0.0:5050",
   apiKey: EDEN_API_KEY,
   apiSecret: EDEN_API_SECRET,
 });

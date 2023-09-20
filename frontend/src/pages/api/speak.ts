@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const newMessage : ChatCompletionRequestMessage[] = [{
           "role": "user", 
           "content": prompt
-        }];      
+        }]; 
         const allMessages = chat.concat(newMessage);
         const answer = await llm(martian, allMessages);
 
@@ -61,10 +61,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           tts(answer, martian_.voiceId)
         ]);
 
+        //const audioData = fs.readFileSync('audio_673480.mp3');
         const imageFetch = await fetch(imageUrl);
         const imageBuffer = await imageFetch.arrayBuffer();
         const image = Buffer.from(imageBuffer).toString('base64');
-
         const base64Audio = Buffer.from(audioData).toString('base64');
       
         // save local file
