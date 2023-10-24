@@ -10,6 +10,7 @@
     "chat": "nodemon --quiet --watch src --ext ts,tsx --exec tsx scripts/chat.ts"
   },
   "dependencies": {
+    "@edenlabs/eden-sdk": "^0.1.1",
     "@rainbow-me/rainbowkit": "^0.8.1",
     "@types/formidable": "^3.4.2",
     "@types/node": "18.14.2",
