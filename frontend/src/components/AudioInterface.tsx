@@ -4,6 +4,9 @@ import { AudioOutlined, StopOutlined, ReloadOutlined, LoadingOutlined } from '@a
 import axios from 'axios';
 import { ChatCompletionRequestMessage } from "openai";
 
+
+const icebreaker = 'I want you to begin the conversation by asking me what my favorite spirit animal is. From there, I want you to create a story about a time you encountered that animal.'
+
 const AudioInterface = () => {
   const [thinking, setThinking] = useState(false);
   const [listening, setListening] = useState(false);
@@ -13,13 +16,43 @@ const AudioInterface = () => {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const audioBlobRef = useRef<Blob | null>(null);
 
+  const breakIce = async () => {
+    console.log("1")
+    const response = await axios.post('/api/speakfirst', {
+      martian: "verdelis",
+      prompt: icebreaker,
+    });
+    console.log("2")
+    const { answer, audio } = response.data;
+    console.log("3")
+    console.log(answer)
+    
+    const newMessages: ChatCompletionRequestMessage[] = [
+      {
+        role: 'user',
+        content: icebreaker,
+      },{
+        role: 'assistant',
+        content: answer,
+      }
+    ];
+    setChat((prevChat) => [...prevChat, ...newMessages]);
+
+    const blob = new Blob([new Uint8Array(Buffer.from(audio, 'base64').buffer)], { type: 'audio/mpeg' });
+    const returnAudioUrl = URL.createObjectURL(blob);
+    setAudioUrls(prevUrls => [...prevUrls, null, returnAudioUrl]);
+
+
+  };
+
+
   const sendAudio = async () => {
     setThinking(true);
     const data = new FormData();
     data.append("file", audioBlobRef.current as Blob);
     data.append("model", "whisper-1");
     data.append("language", "en");
-    data.append("martian", "nebulana");
+    data.append("martian", "verdelis");
     data.append("chat", JSON.stringify(chat));    
 
     try {
